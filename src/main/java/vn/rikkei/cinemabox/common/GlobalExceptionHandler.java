@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import vn.rikkei.cinemabox.customer.BadRequestException;
+import vn.rikkei.cinemabox.payment.PaymentFailedException;
 
 /**
  * Xử lý lỗi tập trung: chuyển exception thành ApiError.
@@ -81,6 +82,27 @@ public class GlobalExceptionHandler {
         }
         return build(HttpStatus.BAD_REQUEST, "BAD_REQUEST",
                 "Dữ liệu vi phạm ràng buộc", req, List.of());
+    }
+
+    @ExceptionHandler(NotEnoughSeatsException.class)
+    public ResponseEntity<ApiError> handleNotEnoughSeats(
+            NotEnoughSeatsException ex, HttpServletRequest req) {
+        return build(HttpStatus.CONFLICT, "NOT_ENOUGH_SEATS",
+                ex.getMessage(), req, List.of());
+    }
+
+    @ExceptionHandler(PaymentFailedException.class)
+    public ResponseEntity<ApiError> handlePaymentFailed(
+            PaymentFailedException ex, HttpServletRequest req) {
+        return build(HttpStatus.PAYMENT_REQUIRED, "PAYMENT_FAILED",
+                ex.getMessage(), req, List.of());
+    }
+
+    @ExceptionHandler(InvalidStateException.class)
+    public ResponseEntity<ApiError> handleInvalidState(
+            InvalidStateException ex, HttpServletRequest req) {
+        return build(HttpStatus.CONFLICT, "INVALID_STATE",
+                ex.getMessage(), req, List.of());
     }
 
     /** Lưới an toàn cuối cùng: lỗi chưa được xử lý riêng sẽ thành 500. */
