@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.rikkei.cinemabox.common.ResourceNotFoundException;
 
 @Service
-@Transactional(readOnly = true)
 public class ShowtimeService {
     private final ShowtimeRepository showtimeRepository;
 
@@ -13,6 +12,7 @@ public class ShowtimeService {
         this.showtimeRepository = showtimeRepository;
     }
 
+    @Transactional(readOnly = true)
     public ShowtimeResponse getById(Long id) {
         Showtime showtime = showtimeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy suất chiếu id=" + id));

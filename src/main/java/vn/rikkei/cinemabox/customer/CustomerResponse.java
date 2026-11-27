@@ -1,6 +1,5 @@
 package vn.rikkei.cinemabox.customer;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public record CustomerResponse(

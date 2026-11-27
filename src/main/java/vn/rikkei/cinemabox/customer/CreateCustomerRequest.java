@@ -15,9 +15,11 @@ public record CreateCustomerRequest(
         @Size(max = 150, message = "Email tối đa 150 ký tự")
         String email,
 
-        @Pattern(regexp = "^0[0-9]{9}$", message = "Số điện thoại gồm 10 chữ số và bắt đầu bằng 0")
+        @Pattern(regexp = "^0[0-9]{9}$",
+                message = "Số điện thoại gồm 10 chữ số và bắt đầu bằng 0")
         String phone,
 
-        @Pattern(regexp = "STANDARD|GOLD", message = "memberLevel chỉ nhận STANDARD hoặc GOLD")
+        @Pattern(regexp = "STANDARD|GOLD",
+                message = "memberLevel chỉ nhận STANDARD hoặc GOLD")
         String memberLevel) {
 }

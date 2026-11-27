@@ -9,7 +9,6 @@ import vn.rikkei.cinemabox.common.DuplicateException;
 import vn.rikkei.cinemabox.common.ResourceNotFoundException;
 
 @Service
-@Transactional
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
@@ -17,15 +16,21 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    @Transactional
     public CustomerResponse create(CreateCustomerRequest request) {
-        if (customerRepository.existsByEmail(request.email().trim())) {
+        String email = request.email().trim();
+        if (customerRepository.existsByEmail(email)) {
             throw new DuplicateException("Email đã tồn tại");
         }
+
         Customer customer = new Customer();
         customer.setFullName(request.fullName().trim());
-        customer.setEmail(request.email().trim());
+        customer.setEmail(email);
         customer.setPhone(request.phone());
-        customer.setMemberLevel(request.memberLevel() == null ? "STANDARD" : request.memberLevel());
+        customer.setMemberLevel(request.memberLevel() == null
+                ? "STANDARD"
+                : request.memberLevel());
+
         return CustomerResponse.from(customerRepository.save(customer));
     }
 
